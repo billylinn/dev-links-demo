@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev Links — Demo</title>
+  <style>    /* ── Variables ──────────────────────────────────────────── */
+    :root {
+      --bg:#f3f4f6; --surface:#fff; --surface2:#f9fafb;
+      --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow:0 1px 3px rgba(0,0,0,.08);
+      --shadow-md:0 4px 16px rgba(0,0,0,.12);
+      --radius:10px; --radius-sm:6px;
+
+      /* env type colors */
+      --cl:#137333; --cl-bg:#e6f4ea; --cl-bar:#34a853;
+      --cd:#1967d2; --cd-bg:#e8f0fe; --cd-bar:#4285f4;
+      --cs:#b06000; --cs-bg:#fef7e0; --cs-bar:#f9ab00;
+      --cp:#a50e0e; --cp-bg:#fce8e6; --cp-bar:#ea4335;
+    }
+    [data-theme="dark"] {
+      --bg:#111827; --surface:#1f2937; --surface2:#111827;
+      --text:#f3f4f6; --muted:#9ca3af; --border:#374151;
+      --shadow:0 1px 3px rgba(0,0,0,.3);
+      --cl:#81c995; --cl-bg:#1a2e22; --cl-bar:#34a853;
+      --cd:#7baaf7; --cd-bg:#1a2340; --cd-bar:#4285f4;
+      --cs:#fbc02d; --cs-bg:#2a2010; --cs-bar:#f9ab00;
+      --cp:#f28b82; --cp-bg:#2c1515; --cp-bar:#ea4335;
+    }
+
+    /* ── Reset ──────────────────────────────────────────────── */
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;
+      transition:background .25s,color .25s}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;cursor:pointer}
+    kbd{font-family:monospace;font-size:.82em;padding:1px 5px;
+      border-radius:4px;border:1px solid var(--border);background:var(--surface2)}
+
+    /* ── App Header ─────────────────────────────────────────── */
+    .app-header{
+      position:sticky;top:0;z-index:100;
+      background:var(--surface);border-bottom:1px solid var(--border);
+      box-shadow:var(--shadow);
+      display:flex;align-items:center;gap:14px;padding:10px 24px;
+    }
+    .app-title{font-size:1.05rem;font-weight:700;white-space:nowrap;
+      display:flex;align-items:center;gap:7px}
+    .search-wrap{flex:1;max-width:560px;position:relative}
+    .search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);
+      color:var(--muted);pointer-events:none;flex-shrink:0}
+    #searchInput{width:100%;padding:8px 34px 8px 34px;border-radius:22px;
+      border:1.5px solid var(--border);background:var(--bg);color:var(--text);
+      font-size:.93rem;outline:none;transition:border-color .2s}
+    #searchInput:focus{border-color:var(--cd)}
+    #searchInput::placeholder{color:var(--muted)}
+    #searchClear{position:absolute;right:11px;top:50%;transform:translateY(-50%);
+      background:none;border:none;color:var(--muted);font-size:.9rem;
+      display:none;padding:3px;border-radius:4px}
+    #searchClear:hover{color:var(--text)}
+    .hdr-actions{display:flex;gap:8px;margin-left:auto}
+    .icon-btn{padding:6px 11px;border-radius:var(--radius-sm);
+      border:1.5px solid var(--border);background:var(--surface);color:var(--text);
+      font-size:.85rem;font-weight:600;transition:background .15s}
+    .icon-btn:hover{background:var(--surface2)}
+
+    /* ── Toolbar ────────────────────────────────────────────── */
+    .toolbar{position:sticky;z-index:99;top:49px;
+      background:var(--surface);border-bottom:1px solid var(--border)}
+    .tb-row{display:flex;align-items:center;gap:16px;padding:7px 24px;flex-wrap:wrap}
+    .tb-label{font-size:.68rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.08em;color:var(--muted);white-space:nowrap;flex-shrink:0}
+
+    /* category pills */
+    .cat-pill{padding:4px 11px;border-radius:18px;border:1.5px solid var(--border);
+      background:var(--surface2);color:var(--muted);font-size:.8rem;font-weight:600;
+      transition:all .15s;white-space:nowrap}
+    .cat-pill:hover{border-color:var(--cd);color:var(--cd)}
+    .cat-pill.active{background:var(--cd);border-color:var(--cd);color:#fff}
+
+    /* env group */
+    .env-group{display:flex;align-items:center;gap:3px}
+    .eg-label{font-size:.68rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.06em;padding:3px 7px;border-radius:4px;
+      white-space:nowrap;transition:opacity .15s}
+    .eg-label.local{color:var(--cl);background:var(--cl-bg)}
+    .eg-label.dev  {color:var(--cd);background:var(--cd-bg)}
+    .eg-label.stage{color:var(--cs);background:var(--cs-bg)}
+    .eg-label.prod {color:var(--cp);background:var(--cp-bg)}
+    .eg-label.dimmed{opacity:.35}
+    .env-col-btn{padding:3px 7px;border-radius:4px;border:1.5px solid var(--border);
+      background:var(--surface);color:var(--muted);font-size:.72rem;font-weight:600;
+      white-space:nowrap;transition:all .15s}
+    .env-col-btn:hover{border-color:var(--muted)}
+    .env-col-btn.on.local{background:var(--cl-bg);color:var(--cl);border-color:var(--cl)}
+    .env-col-btn.on.dev  {background:var(--cd-bg);color:var(--cd);border-color:var(--cd)}
+    .env-col-btn.on.stage{background:var(--cs-bg);color:var(--cs);border-color:var(--cs)}
+    .env-col-btn.on.prod {background:var(--cp-bg);color:var(--cp);border-color:var(--cp)}
+
+    /* ── Main ───────────────────────────────────────────────── */
+    main{padding:20px 24px 60px}
+
+    /* ── Global services ────────────────────────────────────── */
+    .section-title{font-size:.68rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.08em;color:var(--muted);margin-bottom:9px}
+    .global-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+    .global-card{display:flex;align-items:center;gap:9px;padding:9px 14px;
+      border-radius:var(--radius-sm);border:1.5px solid var(--border);
+      background:var(--surface);box-shadow:var(--shadow);
+      font-size:.86rem;font-weight:600;transition:all .15s;color:var(--text)}
+    .global-card:hover{border-color:var(--cd);color:var(--cd);box-shadow:var(--shadow-md);
+      transform:translateY(-1px)}
+    .global-card img{width:16px;height:16px;border-radius:3px;flex-shrink:0}
+    .gc-meta{display:flex;flex-direction:column;gap:1px}
+    .gc-desc{font-size:.73rem;font-weight:400;color:var(--muted)}
+
+    /* ── Matrix ─────────────────────────────────────────────── */
+    .matrix-outer{overflow:auto;max-height:60vh;border:1px solid var(--border);
+      border-radius:var(--radius);box-shadow:var(--shadow)}
+    table.matrix{width:100%;border-collapse:collapse;font-size:.875rem}
+
+    /* sticky type-group header row */
+    table.matrix thead tr.type-row th{
+      position:sticky;top:0;z-index:12;
+      background:var(--surface2);padding:5px 8px;text-align:center;
+      font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+      border-bottom:1px solid var(--border);white-space:nowrap}
+    tr.type-row th.th-local{color:var(--cl);border-top:3px solid var(--cl-bar)}
+    tr.type-row th.th-dev  {color:var(--cd);border-top:3px solid var(--cd-bar)}
+    tr.type-row th.th-stage{color:var(--cs);border-top:3px solid var(--cs-bar)}
+    tr.type-row th.th-prod {color:var(--cp);border-top:3px solid var(--cp-bar)}
+
+    /* sticky env label row */
+    table.matrix thead tr.env-row th{
+      position:sticky;z-index:11;
+      background:var(--surface);padding:6px 8px;text-align:center;
+      font-size:.75rem;font-weight:700;min-width:68px;white-space:nowrap;
+      border-bottom:2px solid var(--border)}
+    tr.env-row th.local{color:var(--cl)}
+    tr.env-row th.dev  {color:var(--cd)}
+    tr.env-row th.stage{color:var(--cs)}
+    tr.env-row th.prod {color:var(--cp)}
+
+    /* sticky name column */
+    table.matrix th.name-col,
+    table.matrix td.name-col{
+      position:sticky;left:0;z-index:10;background:var(--surface)}
+    table.matrix th.name-col{
+      background:var(--surface2);min-width:200px;max-width:300px;
+      text-align:left;padding:7px 16px;font-size:.7rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
+      border-right:2px solid var(--border);z-index:20}
+    /* corner cell (rowspan 2) sits above both sticky rows */
+    table.matrix th.name-col{z-index:21}
+
+    /* resource tbody */
+    table.matrix tbody tr.resource-row{border-bottom:1px solid var(--border);
+      transition:background .1s}
+    table.matrix tbody tr.resource-row:last-child{border-bottom:none}
+    table.matrix tbody tr.resource-row:hover{background:var(--surface2)}
+    table.matrix tbody tr.resource-row:hover td.name-col{background:var(--surface2)}
+    table.matrix tbody tr.resource-row.kb-focus{background:var(--cd-bg)}
+    table.matrix tbody tr.resource-row.kb-focus td.name-col{background:var(--cd-bg)}
+
+    /* category group row */
+    table.matrix tr.cat-row td{
+      padding:5px 16px;font-size:.67rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.07em;color:var(--muted);background:var(--surface2);
+      border-bottom:1px solid var(--border);border-top:2px solid var(--border)}
+    table.matrix tr.cat-row:first-child td{border-top:none}
+
+    /* pinned group row */
+    table.matrix tr.pin-row td{
+      padding:5px 16px;font-size:.67rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.07em;color:#d97706;background:#fffbeb;
+      border-bottom:1px solid var(--border)}
+    [data-theme="dark"] table.matrix tr.pin-row td{background:#1c1600}
+
+    /* name cell contents */
+    td.name-col{border-right:2px solid var(--border);padding:0;
+      max-width:300px}
+    .name-cell{display:flex;align-items:center;gap:8px;
+      padding:9px 14px;min-height:48px}
+    .pin-btn{background:none;border:none;font-size:.85rem;
+      color:var(--border);flex-shrink:0;transition:color .15s;padding:2px 4px;
+      border-radius:4px}
+    .pin-btn:hover{color:#d97706}
+    .pin-btn.on{color:#d97706}
+    .name-info{flex:1;min-width:0}
+    .res-name{font-weight:600;font-size:.88rem;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .res-desc{font-size:.73rem;color:var(--muted);
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+    .res-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+    .tag{font-size:.62rem;padding:1px 5px;border-radius:4px;font-weight:600;
+      background:var(--cd-bg);color:var(--cd);cursor:pointer}
+    .tag:hover{filter:brightness(1.15)}
+
+    /* metadata row */
+    .res-meta{display:flex;gap:6px;align-items:center;margin-top:2px;flex-wrap:wrap}
+    .meta-owner{font-size:.68rem;color:var(--muted)}
+    .meta-tech{font-size:.65rem;padding:1px 5px;border-radius:3px;
+      background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-weight:600}
+    .meta-port{font-size:.68rem;font-family:monospace;color:var(--muted)}
+    .meta-docs{font-size:.68rem;color:var(--cd);text-decoration:none;opacity:.8}
+    .meta-docs:hover{opacity:1;text-decoration:underline}
+
+    /* deprecated row */
+    .row-deprecated .res-name{text-decoration:line-through;opacity:.6}
+    .res-deprecated{font-size:.68rem;color:#b45309;margin-top:2px}
+    [data-theme="dark"] .res-deprecated{color:#fbbf24}
+
+    /* notes badge */
+    .res-note-wrap{display:inline-flex;flex-shrink:0;vertical-align:middle}
+    .note-btn{background:none;border:none;padding:0 3px;font-size:.8rem;
+      color:var(--muted);cursor:default;line-height:1;border-radius:3px}
+    .note-btn:hover{color:var(--cd)}
+
+    /* env cells */
+    td.env-cell{text-align:center;padding:5px 3px;position:relative;
+      min-width:68px;vertical-align:middle}
+    .cell-link{display:inline-flex;align-items:center;justify-content:center;
+      gap:3px;width:100%;height:34px;border-radius:var(--radius-sm);
+      transition:all .15s;position:relative}
+    .cell-link:hover{transform:scale(1.04)}
+    .cell-link.local:hover{background:var(--cl-bg);color:var(--cl)}
+    .cell-link.dev:hover  {background:var(--cd-bg);color:var(--cd)}
+    .cell-link.stage:hover{background:var(--cs-bg);color:var(--cs)}
+    .cell-link.prod:hover {background:var(--cp-bg);color:var(--cp)}
+    .cell-link img{width:14px;height:14px;border-radius:2px}
+    .link-icon{width:13px;height:13px;opacity:.65;flex-shrink:0}
+    .cell-arrow{font-size:.75rem;color:var(--muted)}
+    .cell-link:hover .cell-arrow{opacity:1}
+    .cell-empty{color:var(--border);font-size:.8rem;user-select:none}
+
+    /* copy + tooltip */
+    .cell-copy{position:absolute;top:2px;right:2px;
+      background:var(--surface);border:1px solid var(--border);border-radius:4px;
+      padding:1px 4px;font-size:.62rem;color:var(--muted);
+      display:none;z-index:5;transition:all .1s}
+    td.env-cell:hover .cell-copy{display:block}
+    .cell-copy:hover{background:var(--cd-bg);color:var(--cd);border-color:var(--cd)}
+    .cell-tip{position:absolute;bottom:calc(100% + 5px);left:50%;
+      transform:translateX(-50%);background:var(--text);color:var(--bg);
+      font-size:.7rem;padding:4px 8px;border-radius:5px;white-space:nowrap;
+      pointer-events:none;display:none;z-index:300;
+      max-width:320px;overflow:hidden;text-overflow:ellipsis;
+      box-shadow:var(--shadow-md)}
+    td.env-cell:hover .cell-tip{display:block}
+
+    /* search highlights */
+    mark{background:#fde68a;border-radius:2px;padding:0 1px;color:inherit}
+    [data-theme="dark"] mark{background:#78350f;color:#fef3c7}
+
+    /* empty state */
+    .empty{text-align:center;padding:64px 20px;color:var(--muted)}
+    .empty strong{display:block;font-size:1.1rem;margin-bottom:6px;color:var(--text)}
+
+    /* no cols warning */
+    .no-cols{text-align:center;padding:32px 20px;color:var(--muted);
+      font-size:.88rem;border:1px dashed var(--border);border-radius:var(--radius);
+      margin-bottom:20px}
+
+    /* ── EnvSet sections ─────────────────────────────────── */
+    .envset-section{margin-bottom:28px}
+    .envset-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .envset-title{font-size:.78rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.09em;color:var(--muted)}
+    .envset-desc{font-size:.74rem;color:var(--muted)}
+    .envset-sep{flex:1;height:1px;background:var(--border)}
+
+    /* ── Template variable cells ─────────────────────────── */
+    .cell-template-btn{display:flex;flex-direction:column;align-items:center;gap:2px;
+      width:100%;padding:4px 2px;background:none;border:1px dashed var(--border);
+      border-radius:var(--radius-sm);cursor:pointer;color:var(--muted);
+      font-size:.7rem;transition:border-color .15s,color .15s}
+    .cell-template-btn:hover{border-color:var(--cd);color:var(--cd)}
+    .cell-tmpl-icon{font-size:.9rem}
+    .cell-tmpl-vars{font-family:monospace;font-size:.68rem;opacity:.8;
+      max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    /* ── Pages badge + popover ───────────────────────────── */
+    .pages-badge{display:inline-flex;align-items:center;justify-content:center;
+      margin-left:3px;min-width:16px;height:16px;padding:0 4px;
+      background:var(--cd-bg);color:var(--cd);border-radius:8px;
+      font-size:.6rem;font-weight:700;cursor:pointer;line-height:1;
+      border:none;vertical-align:middle;flex-shrink:0;
+      transition:background .15s,color .15s}
+    .pages-badge:hover{background:var(--cd);color:#fff}
+    .logs-badge{display:inline-flex;align-items:center;justify-content:center;
+      margin-left:3px;width:18px;height:16px;padding:0;
+      background:none;border:none;cursor:pointer;vertical-align:middle;
+      flex-shrink:0;font-size:.75rem;opacity:.55;line-height:1;
+      transition:opacity .15s,transform .15s}
+    .logs-badge:hover{opacity:1;transform:scale(1.15)}
+    .pages-popover{position:fixed;z-index:400;background:var(--surface);
+      border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow-md);min-width:200px;max-width:320px;
+      padding:6px 0;display:none}
+    .pages-popover.open{display:block}
+    .pages-popover-title{padding:4px 12px 6px;font-size:.68rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
+      border-bottom:1px solid var(--border);margin-bottom:4px}
+    .page-row{display:flex;align-items:center;gap:4px;padding:4px 8px}
+    .page-link{flex:1;display:flex;align-items:center;gap:6px;
+      font-size:.8rem;color:var(--text);text-decoration:none;
+      padding:3px 4px;border-radius:var(--radius-sm)}
+    .page-link:hover{background:var(--surface2)}
+    .page-link svg{flex-shrink:0;opacity:.6}
+    .page-copy{background:none;border:1px solid transparent;border-radius:3px;
+      padding:1px 4px;font-size:.65rem;color:var(--muted);cursor:pointer;flex-shrink:0}
+    .page-copy:hover{border-color:var(--border);color:var(--cd)}
+
+    /* ── Variables form ──────────────────────────────────── */
+    .var-row{display:grid;grid-template-columns:160px 1fr;align-items:center;
+      gap:10px;margin-bottom:12px}
+    .var-label{font-size:.82rem;font-family:monospace;color:var(--text)}
+    .var-input{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+      background:var(--surface2);color:var(--text);font-size:.88rem;width:100%}
+    .var-input:focus{outline:none;border-color:var(--cd)}
+    .sp-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+    .sp-generate-btn{padding:8px 18px;border-radius:var(--radius-sm);
+      background:var(--cd);color:#fff;border:none;cursor:pointer;font-weight:600}
+    .sp-generate-btn:hover{opacity:.85}
+
+    /* footer */
+    footer{text-align:center;padding:14px;font-size:.74rem;color:var(--muted)}
+
+/* ── Drag handles ──────────────────────────────────────── */
+.drag-handle { cursor: grab; color: var(--muted); margin-right: 4px; font-size: 1rem; user-select: none; }
+tr.dragging { opacity: 0.4; }
+tr[draggable] { cursor: default; }
+
+/* ── Admin Info Panel ──────────────────────────────────── */
+.admin-info-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);
+  display:none;align-items:center;justify-content:center;z-index:200}
+.admin-info-overlay.open{display:flex}
+.admin-info-panel{background:var(--surface);border-radius:var(--radius);
+  width:min(480px,92vw);box-shadow:var(--shadow-md);overflow:hidden}
+.sp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sp-header h2{font-size:1rem;font-weight:700}
+.sp-close{background:none;border:none;color:var(--muted);font-size:1.2rem;
+  padding:4px 8px;border-radius:4px;line-height:1}
+.sp-close:hover{background:var(--surface2);color:var(--text)}
+.sp-body{overflow-y:auto;padding:20px}
+.admin-cmd-block{display:flex;align-items:center;gap:8px;background:var(--surface2);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 14px;margin-bottom:12px;font-family:monospace}
+.admin-cmd-block code{flex:1;font-size:.95rem}
+.admin-cmd-copy{background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;padding:0 4px}
+.admin-cmd-copy:hover{color:var(--text)}
+.admin-link{display:block;text-align:center;padding:10px;border-radius:var(--radius-sm);
+  background:var(--cd-bg);color:var(--cd);text-decoration:none;font-size:.9rem;font-weight:600}
+.admin-link:hover{opacity:.85}
+</style>
+</head>
+<body>
+  <style>
+    .demo-banner {
+      background: linear-gradient(90deg, #1967d2, #1558b0);
+      color: #fff;
+      text-align: center;
+      padding: 9px 16px;
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .01em;
+      position: relative;
+      z-index: 200;
+    }
+    .demo-banner a { color: #a8c8ff; text-decoration: underline; }
+    .demo-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 10px;
+      padding: 1px 8px;
+      font-size: .72rem;
+      margin-right: 8px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+  </style>
+  <div class="demo-banner">
+    <span class="demo-badge">Demo</span>
+    This is a public demo using fictional data.
+    All company names, URLs, and services are made up.
+    Built with <a href="https://github.com/your-org/devlinks" target="_blank">Dev Links</a>.
+  </div>
+  <script>
+    // Seed demo state into localStorage so the demo looks rich out of the box.
+    // Uses namespaced keys that won't conflict with a real install.
+    (function() {
+      const ns = 'v2-';
+      // Pre-pin Web App and Auth Service
+      if (!localStorage.getItem(ns + 'pins')) {
+        localStorage.setItem(ns + 'pins', JSON.stringify(['cf-app', 'svc-auth']));
+      }
+      // Pre-set a demo username variable
+      if (!localStorage.getItem(ns + 'uservars')) {
+        localStorage.setItem(ns + 'uservars', JSON.stringify({ username: 'jsmith' }));
+      }
+    })();
+  </script>
+
+<!-- ── App Header ──────────────────────────────────────────── -->
+<header class="app-header">
+  <div class="app-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Dev Links
+  </div>
+  <div class="search-wrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="searchInput" type="search" placeholder="Search by name, tag, URL… (⌘K)" autocomplete="off" />
+    <button id="searchClear" title="Clear">✕</button>
+  </div>
+  <div class="hdr-actions">
+    <button class="icon-btn" id="adminInfoBtn" title="How to add or edit resources">✦ Edit Data</button>
+    <button class="icon-btn" id="varsBtn" title="My Variables" onclick="openVarsPanel()">⚙ My Vars</button>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<!-- ── Toolbar ─────────────────────────────────────────────── -->
+<div class="toolbar" id="toolbar">
+  <div class="tb-row" id="catRow">
+    <span class="tb-label">Category</span>
+  </div>
+  <div class="tb-row" id="colRow">
+    <span class="tb-label">Columns</span>
+  </div>
+</div>
+
+<!-- ── Main ───────────────────────────────────────────────── -->
+<main id="main"></main>
+
+<footer>Press <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> to focus search · Click ★ to pin · ⎘ to copy URL · <span id="lastUpdatedLabel"></span></footer>
+
+<!-- ── Admin Info Panel ─────────────────────────────────── -->
+<div class="admin-info-overlay" id="adminInfoOverlay">
+  <div class="admin-info-panel" role="dialog" aria-modal="true" aria-label="Edit data">
+    <div class="sp-header">
+      <h2>✦ Edit Resources</h2>
+      <button class="sp-close" id="adminInfoClose" aria-label="Close">✕</button>
+    </div>
+    <div class="sp-body">
+      <p style="margin-bottom:16px;color:var(--muted);font-size:.88rem">
+        Resources, environments, and categories are managed through the admin UI.
+        Run the following command in your terminal, then open the link:
+      </p>
+      <div class="admin-cmd-block">
+        <code id="adminCmd">npm run admin</code>
+        <button class="admin-cmd-copy" onclick="navigator.clipboard.writeText('npm run admin')">⎘</button>
+      </div>
+      <a class="admin-link" href="http://localhost:3001" target="_blank" rel="noopener noreferrer">
+        Open Admin UI → http://localhost:3001
+      </a>
+      <p style="margin-top:16px;font-size:.8rem;color:var(--muted)">
+        The admin UI lets you add, edit, and delete resources, environments, envSets, and categories.
+        Changes are validated and rebuilt automatically.
+      </p>
+    </div>
+  </div>
+</div>
+<!-- ── My Variables Panel ──────────────────────────────── -->
+<div class="admin-info-overlay" id="varsOverlay">
+  <div class="admin-info-panel" role="dialog" aria-modal="true" aria-label="My Variables" style="width:min(520px,94vw)">
+    <div class="sp-header">
+      <h2>⚙ My Variables</h2>
+      <button class="sp-close" id="varsClose" aria-label="Close">✕</button>
+    </div>
+    <div class="sp-body">
+      <p id="varCount" style="font-size:.8rem;color:var(--muted);margin-bottom:14px"></p>
+      <div id="varsForm"></div>
+    </div>
+    <div class="sp-footer" style="padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
+      <button class="sp-generate-btn" id="varsSave">Save &amp; Apply</button>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>/* ════════════════════════════════════════════════════════════
+   DATA
+   ════════════════════════════════════════════════════════════ */
+
+const ENVIRONMENTS = [
+  {
+    "id": "local",
+    "label": "Local",
+    "type": "local",
+    "defaultOn": true
+  },
+  {
+    "id": "dev",
+    "label": "Dev",
+    "type": "dev",
+    "defaultOn": true
+  },
+  {
+    "id": "stage1",
+    "label": "Stage 1",
+    "type": "stage",
+    "short": "S1",
+    "defaultOn": true
+  },
+  {
+    "id": "stage2",
+    "label": "Stage 2",
+    "type": "stage",
+    "short": "S2"
+  },
+  {
+    "id": "stage3",
+    "label": "Stage 3",
+    "type": "stage",
+    "short": "S3"
+  },
+  {
+    "id": "prod-us",
+    "label": "Prod US",
+    "type": "prod",
+    "short": "US",
+    "region": "us",
+    "defaultOn": true
+  },
+  {
+    "id": "prod-eu",
+    "label": "Prod EU",
+    "type": "prod",
+    "short": "EU",
+    "region": "eu"
+  },
+  {
+    "id": "prod-au",
+    "label": "Prod AU",
+    "type": "prod",
+    "short": "AU",
+    "region": "au"
+  },
+  {
+    "id": "vendor-sandbox",
+    "label": "Sandbox",
+    "type": "dev"
+  },
+  {
+    "id": "vendor-prod",
+    "label": "Production",
+    "type": "prod",
+    "defaultOn": true
+  }
+];
+
+const ENVSETS = [
+  {
+    "id": "platform",
+    "label": "Platform",
+    "description": "Core platform services across the full dev → stage → prod pipeline",
+    "defaultOn": true,
+    "environments": [
+      "local",
+      "dev",
+      "stage1",
+      "stage2",
+      "stage3",
+      "prod-us",
+      "prod-eu",
+      "prod-au"
+    ]
+  },
+  {
+    "id": "vendors",
+    "label": "Vendors",
+    "description": "Third-party SaaS integrations with their own sandbox / production environments",
+    "defaultOn": true,
+    "environments": [
+      "vendor-sandbox",
+      "vendor-prod"
+    ]
+  }
+];
+
+const CATEGORIES = ["Apps","Microservices","Logs & Monitoring","Tools"];
+const DATA_LAST_UPDATED = "2026-03-19T20:52:16.784Z"; /* patched by build */
+/* ── Resources ─────────────────────────────────────────────
+   Each resource can be:
+     global:true + url:"..."  →  appears as a card (no env matrix)
+     urls:{ envId: "url", … } →  appears as a matrix row
+   ─────────────────────────────────────────────────────────── */
+const RESOURCES = [
+  {
+    "id": "cf-app",
+    "name": "Web App",
+    "category": "Apps",
+    "description": "Main customer-facing application",
+    "tags": [
+      "frontend",
+      "react"
+    ],
+    "owner": "frontend@cloudform.example",
+    "tech": "React / Node",
+    "docsUrl": "https://wiki.cloudform.example/web-app",
+    "logs": [
+      "log-grafana",
+      "log-sentry"
+    ],
+    "pages": [
+      {
+        "label": "Login",
+        "path": "/login"
+      },
+      {
+        "label": "Sign Up",
+        "path": "/signup"
+      },
+      {
+        "label": "Dashboard",
+        "path": "/dashboard"
+      },
+      {
+        "label": "Account Settings",
+        "path": "/account/settings"
+      },
+      {
+        "label": "Billing",
+        "path": "/account/billing"
+      }
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:3000",
+      "dev": "https://{username}.dev.app.cloudform.example",
+      "stage1": "https://app.stage1.cloudform.example",
+      "stage2": "https://app.stage2.cloudform.example",
+      "stage3": "https://app.stage3.cloudform.example",
+      "prod-us": "https://app.cloudform.example",
+      "prod-eu": "https://eu.app.cloudform.example",
+      "prod-au": "https://au.app.cloudform.example"
+    }
+  },
+  {
+    "id": "cf-admin",
+    "name": "Admin Portal",
+    "category": "Apps",
+    "description": "Internal dashboard for account management, billing, and feature flags",
+    "tags": [
+      "admin",
+      "internal"
+    ],
+    "owner": "platform@cloudform.example",
+    "tech": "Vue",
+    "logs": [
+      "log-grafana"
+    ],
+    "pages": [
+      {
+        "label": "Accounts",
+        "path": "/accounts"
+      },
+      {
+        "label": "Feature Flags",
+        "path": "/flags"
+      },
+      {
+        "label": "Audit Log",
+        "path": "/audit"
+      },
+      {
+        "label": "Impersonate",
+        "path": "/impersonate"
+      }
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:4000",
+      "dev": "https://admin.dev.cloudform.example",
+      "stage1": "https://admin.stage1.cloudform.example",
+      "prod-us": "https://admin.cloudform.example",
+      "prod-eu": "https://eu.admin.cloudform.example",
+      "prod-au": "https://au.admin.cloudform.example"
+    }
+  },
+  {
+    "id": "cf-onboarding",
+    "name": "Onboarding Flow",
+    "category": "Apps",
+    "description": "New-user signup wizard and account setup",
+    "tags": [
+      "frontend",
+      "growth"
+    ],
+    "owner": "growth@cloudform.example",
+    "tech": "React",
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:3001",
+      "dev": "https://onboarding.dev.cloudform.example",
+      "stage1": "https://onboarding.stage1.cloudform.example",
+      "prod-us": "https://onboarding.cloudform.example",
+      "prod-eu": "https://eu.onboarding.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-auth",
+    "name": "Auth Service",
+    "category": "Microservices",
+    "description": "SSO, OAuth2, API key validation, and session management",
+    "tags": [
+      "auth",
+      "security",
+      "api"
+    ],
+    "owner": "platform@cloudform.example",
+    "tech": "Go",
+    "docsUrl": "https://wiki.cloudform.example/auth-api",
+    "logs": [
+      "log-grafana",
+      "log-sentry"
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8001",
+      "dev": "https://auth.dev.cloudform.example",
+      "stage1": "https://auth.stage1.cloudform.example",
+      "stage2": "https://auth.stage2.cloudform.example",
+      "stage3": "https://auth.stage3.cloudform.example",
+      "prod-us": "https://auth.cloudform.example",
+      "prod-eu": "https://eu.auth.cloudform.example",
+      "prod-au": "https://au.auth.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-api",
+    "name": "Core API",
+    "category": "Microservices",
+    "description": "Primary REST + GraphQL API serving web and mobile clients",
+    "tags": [
+      "api",
+      "graphql",
+      "rest"
+    ],
+    "owner": "backend@cloudform.example",
+    "tech": "Node / Express",
+    "docsUrl": "https://wiki.cloudform.example/core-api",
+    "logs": [
+      "log-grafana",
+      "log-kibana"
+    ],
+    "pages": [
+      {
+        "label": "Health Check",
+        "path": "/health"
+      },
+      {
+        "label": "GraphQL",
+        "path": "/graphql"
+      },
+      {
+        "label": "Swagger Docs",
+        "path": "/docs"
+      },
+      {
+        "label": "Metrics",
+        "path": "/metrics"
+      }
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8080",
+      "dev": "https://api.dev.cloudform.example",
+      "stage1": "https://api.stage1.cloudform.example",
+      "stage2": "https://api.stage2.cloudform.example",
+      "stage3": "https://api.stage3.cloudform.example",
+      "prod-us": "https://api.cloudform.example",
+      "prod-eu": "https://eu.api.cloudform.example",
+      "prod-au": "https://au.api.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-webhooks",
+    "name": "Webhook Service",
+    "category": "Microservices",
+    "description": "Outbound webhook delivery with retry queue and delivery logs",
+    "tags": [
+      "webhooks",
+      "queue",
+      "async"
+    ],
+    "owner": "backend@cloudform.example",
+    "tech": "Go",
+    "logs": [
+      "log-grafana"
+    ],
+    "pages": [
+      {
+        "label": "Delivery Log",
+        "path": "/deliveries"
+      },
+      {
+        "label": "Retry Queue",
+        "path": "/queue"
+      },
+      {
+        "label": "Health",
+        "path": "/health"
+      }
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8002",
+      "dev": "https://webhooks.dev.cloudform.example",
+      "stage1": "https://webhooks.stage1.cloudform.example",
+      "prod-us": "https://webhooks.cloudform.example",
+      "prod-eu": "https://eu.webhooks.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-reports",
+    "name": "Reporting API",
+    "category": "Microservices",
+    "description": "Async report generation, scheduling, and PDF/CSV export",
+    "tags": [
+      "reports",
+      "async",
+      "api"
+    ],
+    "owner": "data@cloudform.example",
+    "tech": "Python / FastAPI",
+    "logs": [
+      "log-grafana",
+      "log-kibana"
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8003",
+      "dev": "https://reports.dev.cloudform.example",
+      "stage1": "https://reports.stage1.cloudform.example",
+      "stage2": "https://reports.stage2.cloudform.example",
+      "prod-us": "https://reports.cloudform.example",
+      "prod-eu": "https://eu.reports.cloudform.example",
+      "prod-au": "https://au.reports.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-notifications",
+    "name": "Notifications",
+    "category": "Microservices",
+    "description": "Email, SMS, and push notification delivery",
+    "tags": [
+      "email",
+      "sms",
+      "push"
+    ],
+    "owner": "platform@cloudform.example",
+    "tech": "Node",
+    "notes": "SMS delivered via Twilio (see vendor set). Monitor send rates in Grafana before prod deploys.",
+    "logs": [
+      "log-grafana"
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8004",
+      "dev": "https://notify.dev.cloudform.example",
+      "stage1": "https://notify.stage1.cloudform.example",
+      "prod-us": "https://notify.cloudform.example",
+      "prod-eu": "https://eu.notify.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-search",
+    "name": "Search Service",
+    "category": "Microservices",
+    "description": "Full-text search over surveys, responses, and users via Elasticsearch",
+    "tags": [
+      "search",
+      "elasticsearch"
+    ],
+    "owner": "backend@cloudform.example",
+    "tech": "Java / Spring",
+    "deprecated": true,
+    "notes": "Deprecated — being replaced by svc-search-v2 in Q3. Do not onboard new consumers.",
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:8005",
+      "dev": "https://search.dev.cloudform.example",
+      "stage1": "https://search.stage1.cloudform.example",
+      "prod-us": "https://search.cloudform.example"
+    }
+  },
+  {
+    "id": "svc-ingest",
+    "name": "Data Ingest",
+    "category": "Microservices",
+    "description": "High-throughput pipeline for survey responses and event streaming",
+    "tags": [
+      "kafka",
+      "streaming",
+      "data"
+    ],
+    "owner": "data@cloudform.example",
+    "tech": "Kotlin / Kafka",
+    "logs": [
+      "log-grafana",
+      "log-kibana"
+    ],
+    "envSet": "platform",
+    "urls": {
+      "local": "http://localhost:9000",
+      "dev": "https://ingest.dev.cloudform.example",
+      "stage1": "https://ingest.stage1.cloudform.example",
+      "prod-us": "https://ingest.cloudform.example",
+      "prod-eu": "https://eu.ingest.cloudform.example",
+      "prod-au": "https://au.ingest.cloudform.example"
+    }
+  },
+  {
+    "id": "log-grafana",
+    "name": "Grafana",
+    "category": "Logs & Monitoring",
+    "description": "Metrics dashboards, service health, infra utilization, and alerting",
+    "tags": [
+      "metrics",
+      "dashboards",
+      "alerts"
+    ],
+    "pages": [
+      {
+        "label": "API Dashboard",
+        "path": "/d/api-overview"
+      },
+      {
+        "label": "Infra Overview",
+        "path": "/d/infra"
+      },
+      {
+        "label": "Error Rates",
+        "path": "/d/errors"
+      },
+      {
+        "label": "Latency Heatmap",
+        "path": "/d/latency"
+      }
+    ],
+    "envSet": "platform",
+    "urls": {
+      "dev": "https://grafana.dev.cloudform.example",
+      "stage1": "https://grafana.stage1.cloudform.example",
+      "prod-us": "https://grafana.cloudform.example",
+      "prod-eu": "https://eu.grafana.cloudform.example",
+      "prod-au": "https://au.grafana.cloudform.example"
+    }
+  },
+  {
+    "id": "log-kibana",
+    "name": "Kibana",
+    "category": "Logs & Monitoring",
+    "description": "Log search and exploration via the ELK stack",
+    "tags": [
+      "logs",
+      "elk",
+      "search"
+    ],
+    "envSet": "platform",
+    "urls": {
+      "dev": "https://kibana.dev.cloudform.example",
+      "stage1": "https://kibana.stage1.cloudform.example",
+      "prod-us": "https://kibana.cloudform.example",
+      "prod-eu": "https://eu.kibana.cloudform.example"
+    }
+  },
+  {
+    "id": "log-sentry",
+    "name": "Sentry",
+    "category": "Logs & Monitoring",
+    "description": "Error tracking and performance monitoring for all services",
+    "tags": [
+      "errors",
+      "apm",
+      "tracing"
+    ],
+    "global": true,
+    "url": "https://sentry.io/organizations/cloudform"
+  },
+  {
+    "id": "log-statuspage",
+    "name": "Status Page",
+    "category": "Logs & Monitoring",
+    "description": "Public uptime and incident status for customers",
+    "tags": [
+      "uptime",
+      "incidents",
+      "public"
+    ],
+    "global": true,
+    "url": "https://status.cloudform.example"
+  },
+  {
+    "id": "tool-jira",
+    "name": "Jira",
+    "category": "Tools",
+    "description": "Issue tracking, sprint planning, and engineering roadmap",
+    "tags": [
+      "issues",
+      "planning"
+    ],
+    "global": true,
+    "url": "https://cloudform.atlassian.net"
+  },
+  {
+    "id": "tool-confluence",
+    "name": "Confluence",
+    "category": "Tools",
+    "description": "Engineering wiki, architecture docs, and runbooks",
+    "tags": [
+      "docs",
+      "wiki",
+      "runbooks"
+    ],
+    "global": true,
+    "url": "https://cloudform.atlassian.net/wiki"
+  },
+  {
+    "id": "tool-stripe",
+    "name": "Stripe",
+    "category": "Tools",
+    "description": "Payment processing, subscriptions, and billing management",
+    "tags": [
+      "billing",
+      "payments"
+    ],
+    "envSet": "vendors",
+    "urls": {
+      "vendor-sandbox": "https://dashboard.stripe.com/test",
+      "vendor-prod": "https://dashboard.stripe.com"
+    }
+  },
+  {
+    "id": "tool-sendgrid",
+    "name": "SendGrid",
+    "category": "Tools",
+    "description": "Transactional email delivery, templates, and analytics",
+    "tags": [
+      "email",
+      "delivery"
+    ],
+    "notes": "Always use Sandbox sender identity in non-prod. Never deliver to real users from dev or stage.",
+    "envSet": "vendors",
+    "urls": {
+      "vendor-sandbox": "https://app.sendgrid.com/sandbox",
+      "vendor-prod": "https://app.sendgrid.com"
+    }
+  },
+  {
+    "id": "tool-launchdarkly",
+    "name": "LaunchDarkly",
+    "category": "Tools",
+    "description": "Feature flags and progressive delivery for gradual rollouts",
+    "tags": [
+      "feature-flags",
+      "releases"
+    ],
+    "envSet": "vendors",
+    "urls": {
+      "vendor-sandbox": "https://app.launchdarkly.com/cloudform/test",
+      "vendor-prod": "https://app.launchdarkly.com/cloudform/production"
+    }
+  },
+  {
+    "id": "tool-ci",
+    "name": "CI / CD",
+    "category": "Tools",
+    "description": "Build pipelines, deployment workflows, and release automation",
+    "tags": [
+      "ci",
+      "cd",
+      "deployments"
+    ],
+    "global": true,
+    "url": "https://github.com/cloudform-example/platform/actions"
+  }
+];
+
+/* ════════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════════ */
+
+let visibleEnvs   = new Set();
+let activeCategory = "all";
+let searchQuery   = "";
+let pinnedIds     = [];
+
+function loadState() {
+  const theme = localStorage.getItem("v2-theme") ||
+    (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", theme);
+
+  const savedEnvs = localStorage.getItem("v2-envs");
+  visibleEnvs = savedEnvs
+    ? new Set(JSON.parse(savedEnvs))
+    : new Set(ENVIRONMENTS.filter(e => e.defaultOn).map(e => e.id));
+
+  const savedPins = localStorage.getItem("v2-pins");
+  if(savedPins) pinnedIds = JSON.parse(savedPins);
+
+  loadUserVars();
+}
+
+function saveState() {
+  localStorage.setItem("v2-envs", JSON.stringify([...visibleEnvs]));
+  localStorage.setItem("v2-pins", JSON.stringify([...pinnedIds]));
+}
+
+/* ════════════════════════════════════════════════════════════
+   USER VARIABLES  (personal, localStorage only — never in data)
+   ════════════════════════════════════════════════════════════ */
+
+let userVars = {};
+
+function loadUserVars() {
+  try { userVars = JSON.parse(localStorage.getItem("v2-uservars") || "{}"); }
+  catch { userVars = {}; }
+}
+
+function saveUserVars() {
+  localStorage.setItem("v2-uservars", JSON.stringify(userVars));
+}
+
+/** Return all unique {variable} names found across all resource URLs */
+function detectVarNames() {
+  const names = new Set();
+  const re = /\{([^}]+)\}/g;
+  RESOURCES.forEach(r => {
+    const urls = r.global ? [r.url] : Object.values(r.urls || {});
+    urls.forEach(u => { let m; while((m = re.exec(u)) !== null) names.add(m[1]); re.lastIndex = 0; });
+  });
+  return [...names].sort();
+}
+
+/** Replace {var} tokens in a URL with user values. Returns { resolved, missing[] } */
+function resolveUrl(rawUrl) {
+  const missing = [];
+  const resolved = rawUrl.replace(/\{([^}]+)\}/g, (_, name) => {
+    const val = userVars[name];
+    if(val) return val;
+    missing.push(name);
+    return `{${name}}`;
+  });
+  return { resolved, missing };
+}
+
+function hasTemplateVars(url) {
+  return /\{[^}]+\}/.test(url);
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   SEARCH / FILTER HELPERS
+   ════════════════════════════════════════════════════════════ */
+
+function score(r, q) {
+  if(!q) return 1;
+  const lq = q.toLowerCase();
+  if(r.name.toLowerCase().includes(lq))                                    return 4;
+  if((r.tags||[]).some(t => t.toLowerCase().includes(lq)))                 return 3;
+  if((r.description||"").toLowerCase().includes(lq))                      return 2;
+  if(r.category.toLowerCase().includes(lq))                               return 2;
+  if(r.url?.toLowerCase().includes(lq))                                   return 1;
+  if(r.urls && Object.values(r.urls).some(u => u.toLowerCase().includes(lq))) return 1;
+  return 0;
+}
+
+function hl(text, q) {
+  if(!q || !text) return text || "";
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if(i === -1) return text;
+  return text.slice(0,i)
+    + `<mark>${text.slice(i, i+q.length)}</mark>`
+    + hl(text.slice(i+q.length), q);  // recursive for multiple matches
+}
+
+function favicon() {
+  return `<svg class="link-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V9"/><path d="M10 2h4v4"/><line x1="14" y1="2" x2="7" y2="9"/></svg>`;
+}
+
+/* ════════════════════════════════════════════════════════════
+   THEME
+   ════════════════════════════════════════════════════════════ */
+
+function toggleTheme() {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  const next = dark ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("v2-theme", next);
+}
+
+/* ════════════════════════════════════════════════════════════
+   RENDER — TOOLBAR
+   ════════════════════════════════════════════════════════════ */
+
+function renderCategoryPills() {
+  const row = document.getElementById("catRow");
+  const label = row.querySelector(".tb-label");
+  row.innerHTML = "";
+  row.appendChild(label);
+
+  const cats = ["all", ...CATEGORIES];
+  cats.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "cat-pill" + (activeCategory === cat ? " active" : "");
+    btn.textContent = cat === "all" ? "All" : cat;
+    btn.onclick = () => { activeCategory = cat; searchQuery = ""; searchInput.value = ""; searchClear.style.display = "none"; renderAll(); };
+    row.appendChild(btn);
+  });
+}
+
+function renderColumnToggles() {
+  const row = document.getElementById("colRow");
+  const label = row.querySelector(".tb-label");
+  row.innerHTML = "";
+  row.appendChild(label);
+
+  /* Build envMap for quick lookup */
+  const envMap = new Map(ENVIRONMENTS.map(e => [e.id, e]));
+
+  ENVSETS.forEach(es => {
+    const envs = es.environments.map(id => envMap.get(id)).filter(Boolean);
+    const anyOn = envs.some(e => visibleEnvs.has(e.id));
+
+    const grp = document.createElement("div");
+    grp.className = "env-group";
+
+    /* EnvSet group label (acts as all-toggle) */
+    const gLbl = document.createElement("span");
+    gLbl.className = `eg-label${!anyOn ? " dimmed" : ""}`;
+    gLbl.style.cssText = "color:var(--muted);background:var(--surface2);cursor:pointer";
+    gLbl.textContent = es.label;
+    gLbl.title = `Toggle all ${es.label} columns`;
+    gLbl.onclick = () => {
+      if(anyOn) envs.forEach(e => visibleEnvs.delete(e.id));
+      else      envs.forEach(e => visibleEnvs.add(e.id));
+      saveState(); renderAll();
+    };
+    grp.appendChild(gLbl);
+
+    /* Individual env toggles within this envSet */
+    envs.forEach(env => {
+      const on  = visibleEnvs.has(env.id);
+      const btn = document.createElement("button");
+      btn.className = `env-col-btn${on ? " on " + env.type : ""}`;
+      btn.textContent = env.short || env.label;
+      btn.title = env.label;
+      btn.onclick = () => {
+        if(visibleEnvs.has(env.id)) visibleEnvs.delete(env.id);
+        else visibleEnvs.add(env.id);
+        saveState(); renderAll();
+      };
+      grp.appendChild(btn);
+    });
+
+    row.appendChild(grp);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   RENDER — MAIN
+   ════════════════════════════════════════════════════════════ */
+
+function renderMain() {
+  const main = document.getElementById("main");
+  main.innerHTML = "";
+
+  const envMap = new Map(ENVIRONMENTS.map(e => [e.id, e]));
+
+  /* Filter resources by search / category */
+  let resources = RESOURCES.filter(r => {
+    if(searchQuery) return score(r, searchQuery) > 0;
+    if(activeCategory !== "all") return r.category === activeCategory;
+    return true;
+  });
+  if(searchQuery) {
+    resources = resources
+      .map(r => ({ r, s: score(r, searchQuery) }))
+      .sort((a,b) => b.s - a.s)
+      .map(({ r }) => r);
+  }
+
+  const globals   = resources.filter(r => r.global);
+  const matrixRes = resources.filter(r => !r.global);
+
+  /* ── Global services ── */
+  if(globals.length) {
+    const sec = document.createElement("div");
+    const lbl = document.createElement("div");
+    lbl.className = "section-title";
+    lbl.textContent = "Global Services";
+    sec.appendChild(lbl);
+    const strip = document.createElement("div");
+    strip.className = "global-strip";
+    globals.forEach(r => {
+      const a = document.createElement("a");
+      a.href = r.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.className = "global-card";
+      a.innerHTML = `${favicon(r.url)}<div class="gc-meta">
+        <div>${hl(r.name, searchQuery)}</div>
+        ${r.description ? `<div class="gc-desc">${hl(r.description, searchQuery)}</div>` : ""}
+      </div>`;
+      strip.appendChild(a);
+    });
+    sec.appendChild(strip);
+    main.appendChild(sec);
+  }
+
+  /* ── No results ── */
+  if(!matrixRes.length && !globals.length) {
+    main.innerHTML = `<div class="empty"><strong>No resources found</strong>Try a different search or switch category.</div>`;
+    return;
+  }
+  if(!matrixRes.length) return;
+
+  /* ── One matrix section per envSet ── */
+  const pinned = new Set(matrixRes.filter(r => pinnedIds.includes(r.id)).map(r => r.id));
+
+  /* Pinned section (cross-envSet) if not searching */
+  if(!searchQuery && pinned.size) {
+    const pinnedRes = pinnedIds
+      .map(id => matrixRes.find(r => r.id === id))
+      .filter(Boolean);
+    /* Group pinned by their envSet for correct column rendering */
+    ENVSETS.forEach(es => {
+      const esRes = pinnedRes.filter(r => r.envSet === es.id);
+      if(!esRes.length) return;
+      const cols = es.environments.map(id => envMap.get(id)).filter(e => e && visibleEnvs.has(e.id));
+      if(!cols.length) return;
+      renderSection(main, `★ Pinned — ${es.label}`, null, esRes, cols, true);
+    });
+  }
+
+  ENVSETS.forEach(es => {
+    const esRes = searchQuery
+      ? matrixRes.filter(r => r.envSet === es.id)
+      : matrixRes.filter(r => r.envSet === es.id && !pinned.has(r.id));
+
+    if(!esRes.length) return;
+
+    /* Only show env columns that are visible AND belong to this envSet */
+    const cols = es.environments
+      .map(id => envMap.get(id))
+      .filter(e => e && visibleEnvs.has(e.id));
+
+    if(!cols.length) {
+      /* EnvSet exists but all its columns are toggled off — show a notice */
+      const sec = document.createElement("div");
+      sec.className = "envset-section";
+      sec.innerHTML = `<div class="envset-header">
+        <span class="envset-title">${es.label}</span>
+        <span class="envset-sep"></span></div>
+        <div class="no-cols">${es.label} columns are all hidden — toggle them on above.</div>`;
+      main.appendChild(sec);
+      return;
+    }
+
+    renderSection(main, es.label, es.description, esRes, cols, false);
+  });
+
+  /* Resources with no envSet (fallback — shouldn't happen with good data) */
+  const orphans = searchQuery
+    ? matrixRes.filter(r => !r.envSet)
+    : matrixRes.filter(r => !r.envSet && !pinned.has(r.id));
+  if(orphans.length) {
+    const allCols = ENVIRONMENTS.filter(e => visibleEnvs.has(e.id));
+    renderSection(main, "Other", null, orphans, allCols, false);
+  }
+
+  requestAnimationFrame(updateStickyOffsets);
+}
+
+function renderSection(main, title, desc, resources, cols, isPinSection) {
+  const sec = document.createElement("div");
+  sec.className = "envset-section";
+
+  /* Section header */
+  const hdr = document.createElement("div");
+  hdr.className = "envset-header";
+  hdr.innerHTML = `<span class="envset-title">${title}</span>
+    ${desc ? `<span class="envset-desc">— ${desc}</span>` : ""}
+    <span class="envset-sep"></span>`;
+  sec.appendChild(hdr);
+
+  /* Matrix */
+  const outer = document.createElement("div");
+  outer.className = "matrix-outer";
+
+  const table  = document.createElement("table");
+  table.className = "matrix";
+  const thead  = document.createElement("thead");
+
+  /* Type-group header row */
+  const typeRow = document.createElement("tr");
+  typeRow.className = "type-row";
+  const corner = document.createElement("th");
+  corner.className = "name-col";
+  corner.rowSpan = 2;
+  corner.textContent = "Resource";
+  typeRow.appendChild(corner);
+
+  const typeGroups = [];
+  cols.forEach(c => {
+    const last = typeGroups[typeGroups.length-1];
+    if(last && last.type === c.type) last.count++;
+    else typeGroups.push({ type: c.type, count: 1 });
+  });
+  typeGroups.forEach(g => {
+    const th = document.createElement("th");
+    th.colSpan = g.count;
+    th.className = `th-${g.type}`;
+    th.textContent = g.type.charAt(0).toUpperCase() + g.type.slice(1);
+    typeRow.appendChild(th);
+  });
+  thead.appendChild(typeRow);
+
+  /* Env label row */
+  const envRow = document.createElement("tr");
+  envRow.className = "env-row";
+  cols.forEach(col => {
+    const th = document.createElement("th");
+    th.className = col.type;
+    th.textContent = col.short || col.label;
+    th.title = col.label;
+    envRow.appendChild(th);
+  });
+  thead.appendChild(envRow);
+  table.appendChild(thead);
+
+  /* Body */
+  const tbody = document.createElement("tbody");
+
+  if(searchQuery) {
+    resources.forEach(r => tbody.appendChild(makeRow(r, cols)));
+  } else {
+    const catOrder = CATEGORIES.length ? CATEGORIES : [...new Set(resources.map(r => r.category))];
+    const cats = catOrder.filter(c => resources.some(r => r.category === c));
+    cats.forEach(cat => {
+      if(!isPinSection) {
+        const cr = document.createElement("tr");
+        cr.className = "cat-row";
+        const td = document.createElement("td");
+        td.colSpan = cols.length + 1;
+        td.textContent = cat;
+        cr.appendChild(td);
+        tbody.appendChild(cr);
+      }
+      resources.filter(r => r.category === cat)
+        .forEach(r => tbody.appendChild(makeRow(r, cols)));
+    });
+  }
+
+  table.appendChild(tbody);
+  outer.appendChild(table);
+  sec.appendChild(outer);
+  main.appendChild(sec);
+}
+
+function makeRow(r, cols) {
+  const tr = document.createElement("tr");
+  tr.className = "resource-row";
+  tr.dataset.id = r.id;
+
+  /* Name cell */
+  const nameTd = document.createElement("td");
+  nameTd.className = "name-col";
+  const isPinned = pinnedIds.includes(r.id);
+  if (isPinned) tr.setAttribute('draggable', 'true');
+  if (r.deprecated) tr.classList.add('row-deprecated');
+  const noteHtml = r.notes
+    ? `<span class="res-note-wrap"><span class="note-btn" aria-label="Note" data-note="${r.notes.replace(/"/g,'&quot;')}">ℹ</span></span>`
+    : '';
+
+  /* Meta row: owner, tech, port, docs */
+  const metaParts = [];
+  if (r.owner) metaParts.push(`<span class="meta-owner" title="Owner">👤 ${r.owner}</span>`);
+  if (r.tech)  metaParts.push(`<span class="meta-tech">${r.tech}</span>`);
+  if (r.port)  metaParts.push(`<span class="meta-port">:${r.port}</span>`);
+  if (r.docsUrl) metaParts.push(`<a class="meta-docs" href="${r.docsUrl}" target="_blank" rel="noopener noreferrer" title="Documentation" onclick="event.stopPropagation()">📖 Docs</a>`);
+  const metaHtml = metaParts.length ? `<div class="res-meta">${metaParts.join('')}</div>` : '';
+
+  /* Deprecated banner */
+  const deprHtml = r.deprecated
+    ? `<div class="res-deprecated">⚠ Deprecated${r.deprecatedNote ? ` — ${r.deprecatedNote}` : ''}</div>`
+    : '';
+
+  nameTd.innerHTML = `
+    <div class="name-cell">
+      ${isPinned ? '<span class="drag-handle">⠿</span>' : ''}
+      <button class="pin-btn${isPinned ? " on" : ""}" title="${isPinned?"Unpin":"Pin"}" onclick="togglePin('${r.id}')">★</button>
+      <div class="name-info">
+        <div class="res-name">${hl(r.name, searchQuery)}${noteHtml}</div>
+        ${r.description ? `<div class="res-desc">${hl(r.description, searchQuery)}</div>` : ""}
+        ${metaHtml}
+        ${r.tags?.length ? `<div class="res-tags">${r.tags.map(t=>`<span class="tag" onclick="setSearch('${t.replace(/'/g,"\\'")}')">${hl(t, searchQuery)}</span>`).join("")}</div>` : ""}
+        ${deprHtml}
+      </div>
+    </div>`;
+  tr.appendChild(nameTd);
+
+  /* Env cells */
+  cols.forEach(col => {
+    const td = document.createElement("td");
+    td.className = "env-cell";
+    const rawUrl = r.urls?.[col.id];
+    const pages = r.pages || [];
+    const logIds = r.logs || [];
+    /* Which log resources have a URL for this env? */
+    const envLogLinks = logIds
+      .map(id => RESOURCES.find(x => x.id === id))
+      .filter(lr => lr && (lr.global ? lr.url : lr.urls?.[col.id]));
+    const logsBadge = envLogLinks.length
+      ? `<button class="logs-badge" data-res="${r.id}" data-env="${col.id}" title="${envLogLinks.length} log source${envLogLinks.length > 1 ? 's' : ''}">📋</button>`
+      : '';
+    if(rawUrl) {
+      if(hasTemplateVars(rawUrl)) {
+        const { resolved, missing } = resolveUrl(rawUrl);
+        if(missing.length) {
+          /* Unresolved template — show warning, clicking opens vars panel */
+          const missingList = missing.map(n => `{${n}}`).join(", ");
+          td.innerHTML = `
+            <button class="cell-template-btn" title="Set variables to enable this link: ${missingList}"
+              onclick="openVarsPanel()">
+              <span class="cell-tmpl-icon">⚙</span>
+              <span class="cell-tmpl-vars">${missingList}</span>
+            </button>${logsBadge}`;
+        } else {
+          /* All vars resolved */
+          const shortUrl = resolved.replace(/^https?:\/\//,"").replace(/\/$/,"");
+          const pagesBadge = pages.length ? `<button class="pages-badge" data-res="${r.id}" data-env="${col.id}" data-base="${resolved}" title="${pages.length} sub-pages">+${pages.length}</button>` : "";
+          td.innerHTML = `
+            <a class="cell-link ${col.type}" href="${resolved}" target="_blank" rel="noopener noreferrer">
+              ${favicon(resolved)}
+            </a>${pagesBadge}${logsBadge}
+            <div class="cell-tip">${shortUrl}</div>
+            <button class="cell-copy" title="Copy URL" onclick="copyUrl(event,'${resolved.replace(/'/g,"\\'")}')">⎘</button>`;
+        }
+      } else {
+        const shortUrl = rawUrl.replace(/^https?:\/\//,"").replace(/\/$/,"");
+        const pagesBadge = pages.length ? `<button class="pages-badge" data-res="${r.id}" data-env="${col.id}" data-base="${rawUrl}" title="${pages.length} sub-pages">+${pages.length}</button>` : "";
+        td.innerHTML = `
+          <a class="cell-link ${col.type}" href="${rawUrl}" target="_blank" rel="noopener noreferrer">
+            ${favicon(rawUrl)}
+          </a>${pagesBadge}${logsBadge}
+          <div class="cell-tip">${shortUrl}</div>
+          <button class="cell-copy" title="Copy URL" onclick="copyUrl(event,'${rawUrl.replace(/'/g,"\\'")}')">⎘</button>`;
+      }
+    } else {
+      td.innerHTML = `<span class="cell-empty">—</span>${logsBadge}`;
+    }
+    tr.appendChild(td);
+  });
+
+  return tr;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STICKY OFFSETS  (computed after each render)
+   ════════════════════════════════════════════════════════════ */
+
+function updateMatrixHeight() {
+  /* Each matrix-outer fills available viewport height naturally via page scroll.
+     We don't constrain individual matrices — the page itself scrolls.
+     Just ensure no single one is clipped. */
+  document.querySelectorAll(".matrix-outer").forEach(outer => {
+    outer.style.maxHeight = "";
+    outer.style.overflow  = "auto";
+  });
+}
+
+function updateStickyOffsets() {
+  /* Toolbar sits below app-header */
+  const appH    = document.querySelector(".app-header")?.offsetHeight || 49;
+  const toolbar = document.querySelector(".toolbar");
+  if(toolbar) toolbar.style.top = appH + "px";
+
+  /* thead rows in each matrix-outer scroll container.
+     top is relative to its own scroll container so both rows anchor at 0 / typeRowH. */
+  document.querySelectorAll(".matrix-outer").forEach(outer => {
+    const typeRow = outer.querySelector("tr.type-row");
+    const envRow  = outer.querySelector("tr.env-row");
+    if(!typeRow || !envRow) return;
+    typeRow.querySelectorAll("th").forEach(th => th.style.top = "0px");
+    const typeH = typeRow.offsetHeight;
+    envRow.querySelectorAll("th").forEach(th => th.style.top = typeH + "px");
+  });
+
+  updateMatrixHeight();
+}
+
+/* ════════════════════════════════════════════════════════════
+   ACTIONS
+   ════════════════════════════════════════════════════════════ */
+
+function togglePin(id) {
+  const i = pinnedIds.indexOf(id);
+  if (i !== -1) pinnedIds.splice(i, 1);
+  else pinnedIds.push(id);
+  saveState();
+  renderAll();
+}
+
+function copyUrl(e, url) {
+  e.preventDefault();
+  e.stopPropagation();
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = e.currentTarget;
+    const orig = btn.textContent;
+    btn.textContent = "✓";
+    btn.style.color = "var(--cl)";
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ""; }, 1400);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   SEARCH
+   ════════════════════════════════════════════════════════════ */
+
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+
+searchInput.addEventListener("input", () => {
+  searchQuery = searchInput.value.trim();
+  searchClear.style.display = searchQuery ? "block" : "none";
+  if(searchQuery) activeCategory = "all";
+  renderAll();
+});
+
+function setSearch(text) {
+  searchInput.value = text;
+  searchQuery = text;
+  activeCategory = "all";
+  searchClear.style.display = text ? "block" : "none";
+  renderAll();
+  searchInput.focus();
+}
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  searchQuery = "";
+  searchClear.style.display = "none";
+  renderAll();
+});
+
+document.addEventListener("keydown", e => {
+  if((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if(e.key === "Escape" && document.activeElement === searchInput) {
+    searchInput.blur();
+    setKeyFocusRow(null);
+  }
+  /* Arrow keys navigate rows when search is focused or a row is focused */
+  if((e.key === "ArrowDown" || e.key === "ArrowUp") && !e.metaKey && !e.ctrlKey) {
+    const rows = [...document.querySelectorAll('.resource-row')];
+    if (!rows.length) return;
+    if (document.activeElement === searchInput || document.activeElement === document.body) {
+      e.preventDefault();
+      const idx = e.key === "ArrowDown" ? 0 : rows.length - 1;
+      setKeyFocusRow(rows[idx]);
+    } else {
+      const cur = document.querySelector('.resource-row.kb-focus');
+      if (cur) {
+        e.preventDefault();
+        const idx = rows.indexOf(cur);
+        const next = e.key === "ArrowDown" ? rows[idx+1] : rows[idx-1];
+        setKeyFocusRow(next || null);
+        if (!next) searchInput.focus();
+      }
+    }
+  }
+  /* Enter on focused row — open first available URL */
+  if(e.key === "Enter") {
+    const cur = document.querySelector('.resource-row.kb-focus');
+    if (cur) {
+      e.preventDefault();
+      const link = cur.querySelector('a.cell-link');
+      if (link) link.click();
+    }
+  }
+});
+
+function setKeyFocusRow(row) {
+  document.querySelectorAll('.resource-row.kb-focus').forEach(r => r.classList.remove('kb-focus'));
+  if (row) {
+    row.classList.add('kb-focus');
+    row.scrollIntoView({ block: 'nearest' });
+  }
+}
+
+window.addEventListener("resize", () => { updateStickyOffsets(); updateMatrixHeight(); });
+
+/* ════════════════════════════════════════════════════════════
+   URL HASH STATE  (#q=...&cat=...)
+   ════════════════════════════════════════════════════════════ */
+
+function syncUrlHash() {
+  const params = new URLSearchParams();
+  if (searchQuery)             params.set('q', searchQuery);
+  if (activeCategory !== 'all') params.set('cat', activeCategory);
+  const hash = params.toString();
+  history.replaceState(null, '', hash ? '#' + hash : location.pathname + location.search);
+}
+
+function loadFromHash() {
+  if (!location.hash) return;
+  const params = new URLSearchParams(location.hash.slice(1));
+  const q   = params.get('q');
+  const cat = params.get('cat');
+  if (q) {
+    searchQuery = q;
+    searchInput.value = q;
+    searchClear.style.display = 'block';
+    activeCategory = 'all';
+  }
+  if (cat && (cat === 'all' || CATEGORIES.includes(cat))) {
+    activeCategory = cat;
+  }
+}
+
+window.addEventListener('hashchange', () => {
+  loadFromHash();
+  renderAll();
+});
+
+
+function renderAll() {
+  renderCategoryPills();
+  renderColumnToggles();
+  renderMain();
+  initPinDrag();
+  syncUrlHash();
+}
+
+function initPinDrag() {
+  let dragId = null;
+  document.querySelectorAll('.resource-row[draggable]').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      dragId = row.dataset.id;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      dragId = null;
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!dragId || dragId === row.dataset.id) return;
+      const fromIdx = pinnedIds.indexOf(dragId);
+      const toIdx   = pinnedIds.indexOf(row.dataset.id);
+      if (fromIdx === -1 || toIdx === -1) return;
+      pinnedIds.splice(fromIdx, 1);
+      pinnedIds.splice(toIdx, 0, dragId);
+      saveState();
+      renderAll();
+    });
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   BOOT
+   ════════════════════════════════════════════════════════════ */
+
+loadState();
+loadFromHash();
+renderAll();
+
+/* Last-updated label */
+(function() {
+  const el = document.getElementById('lastUpdatedLabel');
+  if (!el || !DATA_LAST_UPDATED) return;
+  const d = new Date(DATA_LAST_UPDATED);
+  const days = Math.floor((Date.now() - d) / 86400000);
+  const rel = days === 0 ? 'today' : days === 1 ? 'yesterday' : `${days} days ago`;
+  el.textContent = `Data updated ${rel}`;
+  el.title = d.toLocaleString();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   NOTES TOOLTIP — fixed-position singleton, escapes overflow
+   ════════════════════════════════════════════════════════════ */
+(function initVarsPanel() {
+  const overlay  = document.getElementById('varsOverlay');
+  const closeBtn = document.getElementById('varsClose');
+  const form     = document.getElementById('varsForm');
+  const varCount = document.getElementById('varCount');
+  if(!overlay) return;
+
+  function buildForm() {
+    const names = detectVarNames();
+    varCount.textContent = names.length
+      ? `${names.length} variable${names.length > 1 ? "s" : ""} found in URLs`
+      : "No template variables found in current URLs";
+    form.innerHTML = "";
+    if(!names.length) {
+      form.innerHTML = `<p style="color:var(--muted);font-size:.85rem">
+        Template variables use <code>{variable-name}</code> syntax in resource URLs.<br>
+        Example: <code>https://&#123;username&#125;.dev.app.cloudform.example</code>
+      </p>`;
+      return;
+    }
+    names.forEach(name => {
+      const row = document.createElement("div");
+      row.className = "var-row";
+      row.innerHTML = `
+        <label class="var-label"><code>{${name}}</code></label>
+        <input class="var-input" type="text" data-var="${name}"
+          placeholder="your value"
+          value="${(userVars[name] || "").replace(/"/g,'&quot;')}" />`;
+      form.appendChild(row);
+    });
+  }
+
+  window.openVarsPanel = function() {
+    buildForm();
+    overlay.classList.add('open');
+    overlay.querySelector('.var-input')?.focus();
+  };
+
+  function saveAndClose() {
+    overlay.querySelectorAll('.var-input').forEach(input => {
+      const name = input.dataset.var;
+      const val  = input.value.trim();
+      if(val) userVars[name] = val;
+      else    delete userVars[name];
+    });
+    saveUserVars();
+    overlay.classList.remove('open');
+    renderAll();  /* re-render with resolved URLs */
+  }
+
+  document.getElementById('varsSave').onclick   = saveAndClose;
+  closeBtn.onclick = () => overlay.classList.remove('open');
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.classList.remove('open'); });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && overlay.classList.contains('open')) overlay.classList.remove('open');
+  });
+})();
+
+(function initNoteTooltip() {
+  const tip = document.createElement('div');
+  tip.id = 'note-tooltip';
+  Object.assign(tip.style, {
+    position:      'fixed',
+    display:       'none',
+    zIndex:        '9999',
+    maxWidth:      '340px',
+    padding:       '8px 12px',
+    borderRadius:  '8px',
+    fontSize:      '.75rem',
+    lineHeight:    '1.55',
+    pointerEvents: 'none',
+    boxShadow:     '0 4px 16px rgba(0,0,0,.22)',
+    whiteSpace:    'normal',
+    wordBreak:     'break-word',
+  });
+  document.body.appendChild(tip);
+
+  function applyTheme() {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    tip.style.background = dark ? '#f3f4f6' : '#111827';
+    tip.style.color       = dark ? '#111827' : '#f3f4f6';
+  }
+
+  document.addEventListener('mouseover', e => {
+    const btn = e.target.closest('.note-btn');
+    if (!btn) return;
+    applyTheme();
+    tip.textContent = btn.dataset.note || '';
+    tip.style.display = 'block';
+    positionTip(btn);
+  });
+
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('.note-btn')) tip.style.display = 'none';
+  });
+
+  document.addEventListener('scroll', () => { tip.style.display = 'none'; }, true);
+
+  function positionTip(btn) {
+    const r   = btn.getBoundingClientRect();
+    const vw  = window.innerWidth;
+    const vh  = window.innerHeight;
+    const pad = 10;
+
+    /* Prefer right of the icon; fall back to left if near the edge */
+    tip.style.top  = 'auto';
+    tip.style.left = 'auto';
+    tip.style.display = 'block';
+
+    const tipW = Math.min(340, vw - pad * 2);
+    tip.style.maxWidth = tipW + 'px';
+
+    let x = r.right + 8;
+    if (x + tipW > vw - pad) x = r.left - tipW - 8;   // flip left
+    if (x < pad) x = pad;
+
+    /* Vertically center on the icon, clamp to viewport */
+    const tipH = tip.offsetHeight;
+    let y = r.top + r.height / 2 - tipH / 2;
+    if (y + tipH > vh - pad) y = vh - tipH - pad;
+    if (y < pad) y = pad;
+
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+})();
+
+(function initAdminInfoPanel() {
+  const overlay  = document.getElementById('adminInfoOverlay');
+  const openBtn  = document.getElementById('adminInfoBtn');
+  const closeBtn = document.getElementById('adminInfoClose');
+  if (!overlay || !openBtn) return;
+  openBtn.onclick  = () => overlay.classList.add('open');
+  closeBtn.onclick = () => overlay.classList.remove('open');
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.remove('open'); });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   PAGES POPOVER
+   ════════════════════════════════════════════════════════════ */
+(function initPagesPopover() {
+  const popover = document.createElement('div');
+  popover.className = 'pages-popover';
+  popover.id = 'pagesPopover';
+  document.body.appendChild(popover);
+
+  let currentBadge = null;
+
+  function closePopover() {
+    popover.classList.remove('open');
+    currentBadge = null;
+  }
+
+  function openPopover(badge) {
+    if (currentBadge === badge) { closePopover(); return; }
+    currentBadge = badge;
+
+    const resId   = badge.dataset.res;
+    const envId   = badge.dataset.env;
+    const baseUrl = badge.dataset.base.replace(/\/$/, '');
+    const res     = RESOURCES.find(r => r.id === resId);
+    if (!res?.pages?.length) { closePopover(); return; }
+
+    const LINK_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+    const envLabel = ENVIRONMENTS.find(e => e.id === envId)?.label || envId;
+    const rows = res.pages.map(p => {
+      const url = baseUrl + p.path;
+      const safeUrl = url.replace(/'/g, "\\'");
+      return `<div class="page-row">
+        <a class="page-link" href="${url}" target="_blank" rel="noopener noreferrer">${LINK_ICON}${p.label}</a>
+        <button class="page-copy" title="Copy" onclick="copyUrl(event,'${safeUrl}')">⎘</button>
+      </div>`;
+    }).join('');
+
+    popover.innerHTML = `<div class="pages-popover-title">${envLabel} — Sub-pages</div>${rows}`;
+    popover.classList.add('open');
+
+    /* Position below the badge */
+    const rect = badge.getBoundingClientRect();
+    const pw   = 240;
+    let left   = rect.left;
+    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    popover.style.left = left + 'px';
+    popover.style.top  = (rect.bottom + 4) + 'px';
+    popover.style.minWidth = pw + 'px';
+  }
+
+  /* Event delegation — badges are re-created on every render */
+  document.addEventListener('click', e => {
+    const badge = e.target.closest('.pages-badge');
+    if (badge) { e.stopPropagation(); openPopover(badge); return; }
+    /* Close if clicking outside popover */
+    if (!popover.contains(e.target)) closePopover();
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopover(); });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   LOGS POPOVER
+   ════════════════════════════════════════════════════════════ */
+
+(function initLogsPopover() {
+  const popover = document.createElement('div');
+  popover.className = 'pages-popover logs-popover';
+  popover.id = 'logsPopover';
+  document.body.appendChild(popover);
+
+  let currentBadge = null;
+
+  function closePopover() {
+    popover.classList.remove('open');
+    currentBadge = null;
+  }
+
+  function openPopover(badge) {
+    if (currentBadge === badge) { closePopover(); return; }
+    currentBadge = badge;
+
+    const resId = badge.dataset.res;
+    const envId = badge.dataset.env;
+    const res   = RESOURCES.find(r => r.id === resId);
+    if (!res?.logs?.length) { closePopover(); return; }
+
+    const LINK_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+    const envLabel = ENVIRONMENTS.find(e => e.id === envId)?.label || envId;
+
+    const rows = res.logs.map(logId => {
+      const lr = RESOURCES.find(x => x.id === logId);
+      if (!lr) return '';
+      const url = lr.global ? lr.url : lr.urls?.[envId];
+      const label = lr.name;
+      if (!url) {
+        return `<div class="page-row log-row-unavail">
+          <span class="page-link" style="opacity:.4;cursor:default">${label}</span>
+          <span style="font-size:.65rem;color:var(--muted)">n/a</span>
+        </div>`;
+      }
+      const safeUrl = url.replace(/'/g, "\\'");
+      return `<div class="page-row">
+        <a class="page-link" href="${url}" target="_blank" rel="noopener noreferrer">${LINK_ICON}${label}</a>
+        <button class="page-copy" title="Copy" onclick="copyUrl(event,'${safeUrl}')">⎘</button>
+      </div>`;
+    }).filter(Boolean).join('');
+
+    popover.innerHTML = `<div class="pages-popover-title">📋 Logs — ${envLabel}</div>${rows || '<div class="page-row" style="opacity:.5;font-size:.8rem">No logs for this env</div>'}`;
+    popover.classList.add('open');
+
+    const rect = badge.getBoundingClientRect();
+    const pw   = 260;
+    let left   = rect.left;
+    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    popover.style.left = left + 'px';
+    popover.style.top  = (rect.bottom + 4) + 'px';
+    popover.style.minWidth = pw + 'px';
+  }
+
+  document.addEventListener('click', e => {
+    const badge = e.target.closest('.logs-badge');
+    if (badge) { e.stopPropagation(); openPopover(badge); return; }
+    if (!popover.contains(e.target)) closePopover();
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopover(); });
+})();</script>
+</html>
