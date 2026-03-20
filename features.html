@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev Links — Features</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --surface: #fff;
+      --surface2: #f9fafb;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+      --radius: 10px;
+      --radius-sm: 6px;
+      --radius-lg: 16px;
+      --cd: #1967d2;
+      --cd-bg: #e8f0fe;
+      --cl: #137333;
+      --cl-bg: #e6f4ea;
+      --cs: #b06000;
+      --cs-bg: #fef7e0;
+      --cp: #a50e0e;
+      --cp-bg: #fce8e6;
+      --accent: #1967d2;
+      --accent-dark: #1558b0;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111827;
+      --surface: #1f2937;
+      --surface2: #111827;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --border: #374151;
+      --shadow: 0 1px 3px rgba(0,0,0,.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.4);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.5);
+      --cd: #7baaf7;
+      --cd-bg: #1a2340;
+      --cl: #81c995;
+      --cl-bg: #1a2e22;
+      --cs: #fbc02d;
+      --cs-bg: #2a2010;
+      --cp: #f28b82;
+      --cp-bg: #2c1515;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background .25s, color .25s;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 24px;
+    }
+    .site-title {
+      font-size: 1.05rem; font-weight: 700;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .site-title svg { color: var(--cd); }
+    .header-nav { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+    .nav-link {
+      padding: 6px 12px; border-radius: var(--radius-sm);
+      font-size: .85rem; font-weight: 600; color: var(--muted);
+      transition: background .15s, color .15s;
+    }
+    .nav-link:hover { background: var(--surface2); color: var(--text); }
+    .nav-link.active { color: var(--cd); }
+    .nav-cta {
+      padding: 7px 14px; border-radius: var(--radius-sm);
+      background: var(--cd); color: #fff;
+      font-size: .85rem; font-weight: 600;
+      border: none; cursor: pointer;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--accent-dark); }
+    .theme-btn {
+      padding: 6px 10px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: .9rem; cursor: pointer;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--surface2); }
+
+    /* ── Hero ───────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1967d2 0%, #1558b0 50%, #0d3d8a 100%);
+      color: #fff;
+      padding: 80px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: .78rem; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -.02em;
+    }
+    .hero h1 span { opacity: .75; }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      opacity: .85;
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      background: #fff; color: var(--cd);
+      font-size: .95rem; font-weight: 700;
+      border: none; cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+    .btn-secondary {
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      background: rgba(255,255,255,.12);
+      border: 1.5px solid rgba(255,255,255,.35);
+      color: #fff;
+      font-size: .95rem; font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.2); }
+
+    /* ── Stats bar ──────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 0;
+    }
+    .stat-item {
+      padding: 20px 40px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-size: 1.8rem; font-weight: 800;
+      color: var(--cd); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: .75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .07em;
+      color: var(--muted);
+    }
+
+    /* ── Sections ───────────────────────────────────────────── */
+    .section { padding: 72px 24px; }
+    .section.alt { background: var(--surface); }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--cd); margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800; line-height: 1.2;
+      letter-spacing: -.01em;
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--muted);
+      max-width: 600px; line-height: 1.65;
+      margin-bottom: 48px;
+    }
+
+    /* ── Feature Grid ───────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .section.alt .feature-card { background: var(--bg); }
+    .feature-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+    .feature-icon.blue { background: var(--cd-bg); }
+    .feature-icon.green { background: var(--cl-bg); }
+    .feature-icon.amber { background: var(--cs-bg); }
+    .feature-icon.red { background: var(--cp-bg); }
+    .feature-icon.purple { background: #f3e8ff; }
+    .feature-icon.teal { background: #e0f7fa; }
+    [data-theme="dark"] .feature-icon.purple { background: #2d1a4a; }
+    [data-theme="dark"] .feature-icon.teal { background: #0d2a2f; }
+    .feature-card h3 {
+      font-size: 1.02rem; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: .875rem; color: var(--muted);
+      line-height: 1.6;
+    }
+    .feature-tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    .feature-tag.blue { background: var(--cd-bg); color: var(--cd); }
+    .feature-tag.green { background: var(--cl-bg); color: var(--cl); }
+    .feature-tag.amber { background: var(--cs-bg); color: var(--cs); }
+    .feature-tag.red { background: var(--cp-bg); color: var(--cp); }
+
+    /* ── Showcase (big feature rows) ────────────────────────── */
+    .showcase { display: flex; align-items: center; gap: 60px; margin-bottom: 80px; }
+    .showcase:last-child { margin-bottom: 0; }
+    .showcase.reverse { flex-direction: row-reverse; }
+    .showcase-text { flex: 1; min-width: 0; }
+    .showcase-text h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 800; margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .showcase-text p {
+      font-size: .9rem; color: var(--muted);
+      line-height: 1.7; margin-bottom: 18px;
+    }
+    .showcase-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .showcase-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .875rem; line-height: 1.5;
+    }
+    .showcase-list li::before {
+      content: '✓';
+      display: flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--cl-bg); color: var(--cl);
+      font-size: .7rem; font-weight: 800;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .showcase-visual {
+      flex: 1.2; min-width: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      aspect-ratio: 16/10;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .screenshot-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .screenshot-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: var(--muted);
+      font-size: .82rem; text-align: center; padding: 16px;
+    }
+    .screenshot-placeholder .ph-icon { font-size: 2.5rem; opacity: .4; }
+    .screenshot-placeholder .ph-filename {
+      font-family: monospace;
+      font-size: .72rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 4px;
+      color: var(--cd);
+    }
+
+    /* ── Keyboard shortcuts block ───────────────────────────── */
+    .kbd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .kbd-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .section.alt .kbd-item { background: var(--bg); }
+    kbd {
+      font-family: monospace; font-size: .82em;
+      padding: 3px 7px; border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .kbd-desc { font-size: .83rem; color: var(--muted); }
+
+    /* ── Env color legend ───────────────────────────────────── */
+    .env-legend {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .env-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: .8rem; font-weight: 600;
+    }
+    .env-badge.local { background: var(--cl-bg); color: var(--cl); }
+    .env-badge.dev   { background: var(--cd-bg); color: var(--cd); }
+    .env-badge.stage { background: var(--cs-bg); color: var(--cs); }
+    .env-badge.prod  { background: var(--cp-bg); color: var(--cp); }
+    .env-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .env-badge.local .env-dot { background: #34a853; }
+    .env-badge.dev   .env-dot { background: #4285f4; }
+    .env-badge.stage .env-dot { background: #f9ab00; }
+    .env-badge.prod  .env-dot { background: #ea4335; }
+
+    /* ── Admin callout ──────────────────────────────────────── */
+    .callout {
+      background: linear-gradient(135deg, var(--cd-bg) 0%, var(--surface) 100%);
+      border: 1px solid rgba(25,103,210,.2);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      display: flex; align-items: center; gap: 32px;
+    }
+    .callout-icon { font-size: 3rem; flex-shrink: 0; }
+    .callout h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .callout p { font-size: .875rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .callout-cmd {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: monospace; font-size: .9rem;
+      background: var(--surface); color: var(--cd);
+      border: 1.5px solid var(--border);
+      padding: 8px 16px; border-radius: var(--radius-sm);
+    }
+
+    /* ── CTA section ────────────────────────────────────────── */
+    .cta-section {
+      background: var(--surface);
+      padding: 72px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .cta-section h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800; margin-bottom: 14px;
+    }
+    .cta-section p {
+      color: var(--muted); margin-bottom: 32px;
+      max-width: 480px; margin-left: auto; margin-right: auto;
+      line-height: 1.6;
+    }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-primary {
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      background: var(--cd); color: #fff;
+      font-size: .95rem; font-weight: 700;
+      border: none; cursor: pointer;
+      transition: background .15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .cta-primary:hover { background: var(--accent-dark); }
+    .cta-ghost {
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      background: transparent; color: var(--text);
+      font-size: .95rem; font-weight: 600;
+      border: 1.5px solid var(--border); cursor: pointer;
+      transition: border-color .15s, background .15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .cta-ghost:hover { border-color: var(--muted); background: var(--surface2); }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: .8rem; color: var(--muted);
+    }
+    .site-footer a { color: var(--cd); font-weight: 600; }
+
+    /* ── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .showcase, .showcase.reverse { flex-direction: column; gap: 32px; }
+      .stat-item { padding: 16px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .callout { flex-direction: column; gap: 16px; }
+      .hero { padding: 48px 24px 64px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="site-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+      Dev Links
+    </div>
+    <nav class="header-nav">
+      <a href="index.html" class="nav-link">App</a>
+      <a href="features.html" class="nav-link active">Features</a>
+      <button class="theme-btn" id="themeToggle" title="Toggle dark mode">🌙</button>
+      <a href="index.html" class="nav-cta">Open App →</a>
+    </nav>
+  </header>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Internal Tool — Alchemer Devs
+    </div>
+    <h1>Every URL, Every Env,<br/><span>One Place.</span></h1>
+    <p>
+      Dev Links is the internal homepage for Alchemer developers — a fast, searchable matrix
+      of every service URL across all environments, so you stop hunting and start shipping.
+    </p>
+    <div class="hero-actions">
+      <a href="index.html" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Open Dev Links
+      </a>
+      <a href="#features" class="btn-secondary">
+        See all features ↓
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Stats bar ──────────────────────────────────────────── -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">26</div>
+      <div class="stat-label">Resources</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">16</div>
+      <div class="stat-label">Environments</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Env Sets</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">⌘K</div>
+      <div class="stat-label">Search Shortcut</div>
+    </div>
+  </div>
+
+  <!-- ── Core Features Grid ─────────────────────────────────── -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-label">Core Features</div>
+      <h2 class="section-title">Everything you need, nothing you don't</h2>
+      <p class="section-sub">
+        Built for developers who want to move fast. No logins, no onboarding, no loading spinners —
+        just your links, instantly.
+      </p>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon blue">🔍</div>
+          <h3>Instant Full-Text Search</h3>
+          <p>Search across resource names, tags, descriptions, URLs, and categories simultaneously. Keyboard shortcut <kbd>⌘K</kbd> focuses the search bar from anywhere.</p>
+          <span class="feature-tag blue">⌘K / Ctrl+K</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon green">📌</div>
+          <h3>Pinned Resources</h3>
+          <p>Star any resource to pin it to the top of the page for quick access. Reorder your pins via drag-and-drop. Pins are saved between sessions.</p>
+          <span class="feature-tag green">Persistent</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon amber">⚙️</div>
+          <h3>Personal URL Variables</h3>
+          <p>Define template variables like <code>{username}</code> or <code>{app-folder}</code> that auto-populate into URLs site-wide. Your personal values stay in your browser only.</p>
+          <span class="feature-tag amber">Private &amp; Local</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon blue">🌙</div>
+          <h3>Dark &amp; Light Mode</h3>
+          <p>Toggle between dark and light themes. Your preference is saved to localStorage and remembered across visits.</p>
+          <span class="feature-tag blue">Persistent</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon green">📋</div>
+          <h3>One-Click URL Copy</h3>
+          <p>Click any URL cell or press <kbd>⎘</kbd> to copy the URL to your clipboard instantly — no selecting, no right-clicking.</p>
+          <span class="feature-tag green">Clipboard</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon purple">🔗</div>
+          <h3>Deep Link Sharing</h3>
+          <p>URL hash parameters encode your active filters so you can share a specific view — filtered by category, environment set, or search term — with a teammate.</p>
+          <span class="feature-tag blue">Shareable</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon amber">🏷️</div>
+          <h3>Category Filtering</h3>
+          <p>Filter by Apps, Microservices, Logs &amp; Monitoring, or Tools with a single click on the sticky toolbar. The view updates instantly.</p>
+          <span class="feature-tag amber">4 Categories</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon teal">🎛️</div>
+          <h3>Column Visibility Toggles</h3>
+          <p>Show or hide individual environment columns — or entire environment sets (Monolith vs. SaaS Vendor) — to focus on exactly what you need.</p>
+          <span class="feature-tag green">Flexible</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon red">🤖</div>
+          <h3>AI / MCP Integration</h3>
+          <p>A built-in MCP (Model Context Protocol) server lets Claude or Cursor AI query your resources programmatically — so your AI assistant knows your dev URLs too.</p>
+          <span class="feature-tag red">MCP Server</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Showcase: Resource Matrix ──────────────────────────── -->
+  <section class="section alt">
+    <div class="container">
+      <div class="section-label">Resource Matrix</div>
+      <h2 class="section-title">Your entire stack, at a glance</h2>
+      <p class="section-sub">
+        A sticky-header matrix maps every resource to every environment. Scroll down without losing context.
+        Color-coded environment types make Local, Dev, Stage, and Prod instantly scannable.
+      </p>
+
+      <div class="env-legend">
+        <span class="env-badge local"><span class="env-dot"></span> Local</span>
+        <span class="env-badge dev"><span class="env-dot"></span> Dev</span>
+        <span class="env-badge stage"><span class="env-dot"></span> Stage</span>
+        <span class="env-badge prod"><span class="env-dot"></span> Production</span>
+      </div>
+
+      <div class="showcase">
+        <div class="showcase-text">
+          <h2>Sticky headers keep you oriented while you scroll</h2>
+          <p>
+            The resource name column stays fixed on the left, while environment headers stay pinned
+            at the top. No matter how far you scroll, you always know what you're looking at.
+          </p>
+          <ul class="showcase-list">
+            <li>26 resources across 2 environment sets</li>
+            <li>16 environments: Local, Dev, Thrall, 6 Stages, 4 Prod regions, 2 SaaS/Vendor</li>
+            <li>Resource metadata: owner, tech stack, tags, docs link</li>
+            <li>Deprecation warnings surfaced inline</li>
+            <li>Related logs and pages accessible via hover badge</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/01-main-matrix.png"
+            alt="Dev Links main matrix view"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Main resource matrix view</div>
+            <div class="ph-filename">screenshots/01-main-matrix.png</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase reverse">
+        <div class="showcase-text">
+          <h2>Instant search across everything</h2>
+          <p>
+            Type anything — a resource name, URL fragment, tag, or category — and the table
+            updates in real time. No round trips, no loading.
+          </p>
+          <ul class="showcase-list">
+            <li>Searches name, tags, description, URL, and category</li>
+            <li>Results update as you type</li>
+            <li>Press <kbd>Escape</kbd> to clear and reset instantly</li>
+            <li>Keyboard shortcut <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> from anywhere</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/02-search-in-action.png"
+            alt="Search filtering resources"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Search filtering resources</div>
+            <div class="ph-filename">screenshots/02-search-in-action.png</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Showcase: Pinned & Variables ───────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Personalization</div>
+      <h2 class="section-title">Make it yours</h2>
+      <p class="section-sub">
+        Dev Links adapts to how each developer works. Pin the resources you use most,
+        define personal variables, and switch themes — all saved locally in your browser.
+      </p>
+
+      <div class="showcase">
+        <div class="showcase-text">
+          <h2>Pin your most-used resources</h2>
+          <p>
+            Click the ★ star icon on any resource to pin it to the dedicated "Pinned" section
+            at the top of the page. Drag to reorder. Your pins persist in localStorage.
+          </p>
+          <ul class="showcase-list">
+            <li>Star any resource with one click</li>
+            <li>Pinned section always appears at the top</li>
+            <li>Drag-and-drop reordering</li>
+            <li>Saved to localStorage — survives page reload</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/03-pinned-resources.png"
+            alt="Pinned resources section"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Pinned resources section</div>
+            <div class="ph-filename">screenshots/03-pinned-resources.png</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase reverse">
+        <div class="showcase-text">
+          <h2>Template variables fill in your URLs</h2>
+          <p>
+            Some URLs contain placeholders like <code>{username}</code> or <code>{app-folder}</code>.
+            Open the ⚙ My Vars panel, enter your values once, and every matching URL auto-fills
+            across the entire app.
+          </p>
+          <ul class="showcase-list">
+            <li>Variables defined once, applied everywhere</li>
+            <li>Values are private — stored only in your browser</li>
+            <li>Visual indicator on cells that use template variables</li>
+            <li>Clipboard copy includes your resolved values</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/05-my-variables.png"
+            alt="My Variables panel"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>My Variables panel</div>
+            <div class="ph-filename">screenshots/05-my-variables.png</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase">
+        <div class="showcase-text">
+          <h2>Dark mode for late-night debugging</h2>
+          <p>
+            A carefully tuned dark theme keeps every environment color readable in low light.
+            Toggle with the 🌙 button — your preference is remembered.
+          </p>
+          <ul class="showcase-list">
+            <li>Full dark palette with adjusted environment colors</li>
+            <li>Smooth animated theme transition</li>
+            <li>Saved to localStorage automatically</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/04-dark-mode.png"
+            alt="Dev Links in dark mode"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Dark mode view</div>
+            <div class="ph-filename">screenshots/04-dark-mode.png</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Keyboard Shortcuts ─────────────────────────────────── -->
+  <section class="section alt">
+    <div class="container">
+      <div class="section-label">Keyboard-First</div>
+      <h2 class="section-title">Built for keyboard efficiency</h2>
+      <p class="section-sub">
+        Every common action has a keyboard shortcut so you never have to reach for the mouse.
+      </p>
+      <div class="kbd-grid">
+        <div class="kbd-item">
+          <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd>
+          <span class="kbd-desc">Focus the search bar</span>
+        </div>
+        <div class="kbd-item">
+          <kbd>Escape</kbd>
+          <span class="kbd-desc">Clear search / close panel</span>
+        </div>
+        <div class="kbd-item">
+          <kbd>↑</kbd> <kbd>↓</kbd>
+          <span class="kbd-desc">Navigate rows in the matrix</span>
+        </div>
+        <div class="kbd-item">
+          <kbd>Enter</kbd>
+          <span class="kbd-desc">Open focused resource URL</span>
+        </div>
+        <div class="kbd-item">
+          <kbd>⎘</kbd>
+          <span class="kbd-desc">Copy URL to clipboard</span>
+        </div>
+        <div class="kbd-item">
+          <kbd>Click</kbd>
+          <span class="kbd-desc">Open URL in new tab</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Admin UI ────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Admin &amp; Data</div>
+      <h2 class="section-title">Keep data fresh and correct</h2>
+      <p class="section-sub">
+        A full admin interface and schema validation ensure the
+        data behind Dev Links stays accurate.
+      </p>
+
+      <div class="showcase" style="margin-bottom: 48px;">
+        <div class="showcase-text">
+          <h2>Admin UI — no YAML editing required</h2>
+          <p>
+            Run <code>npm run admin</code> to launch a graphical admin interface. Add, edit, or delete
+            resources, environments, environment sets, and categories without touching a YAML file.
+          </p>
+          <ul class="showcase-list">
+            <li>Full CRUD for resources, environments, and categories</li>
+            <li>Live schema validation with human-readable error messages</li>
+            <li>Pre-commit hooks catch errors before they ship</li>
+            <li>Consistency checks: unique IDs, known env references</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/06-admin-ui.png"
+            alt="Admin UI interface"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Admin UI interface</div>
+            <div class="ph-filename">screenshots/06-admin-ui.png</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Category Filtering ─────────────────────────────────── -->
+  <section class="section alt">
+    <div class="container">
+      <div class="section-label">Filtering &amp; Navigation</div>
+      <h2 class="section-title">Focus on what you need right now</h2>
+      <p class="section-sub">
+        Combine category filters with environment column toggles to build exactly the view
+        you need — then share it with a deep link.
+      </p>
+
+      <div class="showcase reverse" style="margin-bottom: 0;">
+        <div class="showcase-text">
+          <h2>Category pills + column toggles</h2>
+          <p>
+            The sticky toolbar always shows which category and environments are active.
+            Mix and match to narrow the matrix to just the rows and columns you care about.
+          </p>
+          <ul class="showcase-list">
+            <li><strong>Apps</strong> — Customer-facing web applications</li>
+            <li><strong>Microservices</strong> — Internal APIs and services</li>
+            <li><strong>Logs &amp; Monitoring</strong> — Observability tools</li>
+            <li><strong>Tools</strong> — Dev tools, Jira, Confluence, etc.</li>
+            <li>Toggle entire env sets (Monolith vs. SaaS Vendor)</li>
+            <li>Toggle individual environment columns</li>
+          </ul>
+        </div>
+        <div class="showcase-visual">
+          <img
+            src="screenshots/07-category-filter.png"
+            alt="Category filtering toolbar"
+            class="screenshot-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="screenshot-placeholder" style="display:none">
+            <div class="ph-icon">🖼️</div>
+            <div>Category filter toolbar</div>
+            <div class="ph-filename">screenshots/07-category-filter.png</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to stop hunting for URLs?</h2>
+      <p>Dev Links is already running. Open it and start finding things faster.</p>
+      <div class="cta-actions">
+        <a href="index.html" class="cta-primary">
+          Open Dev Links →
+        </a>
+        <a href="index.html#admin" class="cta-ghost">
+          Add a Resource
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p>
+      <a href="index.html">← Back to Dev Links</a>
+      &nbsp;·&nbsp;
+      Features page last updated March 2026
+    </p>
+  </footer>
+
+  <script>
+    // Theme toggle (mirrors the main app)
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const stored = localStorage.getItem('devres-theme') || 'light';
+    if (stored === 'dark') { root.setAttribute('data-theme', 'dark'); btn.textContent = '☀️'; }
+
+    btn.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      btn.textContent = isDark ? '🌙' : '☀️';
+      localStorage.setItem('devres-theme', isDark ? 'light' : 'dark');
+    });
+  </script>
+
+</body>
+</html>
